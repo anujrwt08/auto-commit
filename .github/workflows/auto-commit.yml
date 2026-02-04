@@ -2,20 +2,22 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: "0 16 * * *"   # daily (UTC time)
+    - cron: "0 16 * * *"   # Runs daily (UTC)
   workflow_dispatch:
 
 jobs:
-  commit:
+  auto-commit:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Make changes
+      - name: Update file
         run: |
-          echo "$(date)" >> activity.txt
+          echo "Auto commit on $(date)" >> activity.txt
 
-      - name: Commit changes
+      - name: Commit and push
         run: |
           git config --global user.name "anujrwt08"
           git config --global user.email "anujrwt08@users.noreply.github.com"
