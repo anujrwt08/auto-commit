@@ -2,25 +2,28 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: "0 16 * * *"   # Runs daily (UTC)
+    - cron: "0 16 * * *"   # daily (UTC)
   workflow_dispatch:
+
+permissions:
+  contents: write   # 🔴 THIS FIXES EXIT CODE 128
 
 jobs:
   auto-commit:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Update file
+      - name: Make a change
         run: |
           echo "Auto commit on $(date)" >> activity.txt
 
       - name: Commit and push
         run: |
-          git config --global user.name "anujrwt08"
-          git config --global user.email "anujrwt08@users.noreply.github.com"
+          git config user.name "anujrwt08"
+          git config user.email "anujrwt08@users.noreply.github.com"
           git add .
-          git commit -m "Auto commit $(date)" || echo "No changes"
-          git push
+          git commit -m "Auto commit $(date)" || echo "No changes to commit"
+          git push origin HEAD
